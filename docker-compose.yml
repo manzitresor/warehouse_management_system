@@ -1,8 +1,8 @@
 services:
   db:
-    image: postgres:9-alpine
+    image: postgres:15-alpine
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: warehouse
+      POSTGRES_PASSWORD: manzi123
+      POSTGRES_DB: warehouse_management
