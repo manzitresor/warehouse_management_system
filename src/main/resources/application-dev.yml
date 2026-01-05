@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/warehouse_management
+    username: postgres
+    password: manzi123
+    name: warehouse_management
+
+  sql:
+    init:
+      mode: always
