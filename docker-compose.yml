@@ -6,3 +6,9 @@ services:
     environment:
       POSTGRES_PASSWORD: manzi123
       POSTGRES_DB: warehouse_management
+      POSTGRES_USER: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
