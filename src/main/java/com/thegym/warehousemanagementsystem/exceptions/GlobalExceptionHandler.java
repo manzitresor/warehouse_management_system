@@ -1,6 +1,9 @@
 package com.thegym.warehousemanagementsystem.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,5 +19,12 @@ public class GlobalExceptionHandler {
         var errors = new HashMap<String, String>();
         ex.getBindingResult().getFieldErrors().forEach((error) ->  errors.put(error.getField(), error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+    public ResponseEntity<Map<String, String>> handleOptimisticLockingException(ObjectOptimisticLockingFailureException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", "The resource was updated by another transaction");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
 }
