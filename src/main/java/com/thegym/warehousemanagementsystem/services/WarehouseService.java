@@ -3,7 +3,7 @@ package com.thegym.warehousemanagementsystem.services;
 import com.thegym.warehousemanagementsystem.dtos.UpdateWarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.WarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
-import com.thegym.warehousemanagementsystem.exceptions.DuplicateWarehouseException;
+import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.WarehouseRepository;
 import jakarta.transaction.Transactional;
@@ -17,7 +17,7 @@ public class WarehouseService {
 
     public Warehouse createWarehouse(WarehouseRequestDto warehouseRequestDto) {
         if (warehouseRepository.existsWarehouseByWarehouseNumber(warehouseRequestDto.getWarehouseNumber())) {
-            throw new DuplicateWarehouseException("Warehouse with number " + warehouseRequestDto.getWarehouseNumber() + " already exists.");
+            throw new ConflictException("Warehouse with number " + warehouseRequestDto.getWarehouseNumber() + " already exists.");
         }
 
         var warehouse = new Warehouse();

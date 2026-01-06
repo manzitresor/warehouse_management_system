@@ -1,11 +1,13 @@
 package com.thegym.warehousemanagementsystem.controllers;
 
 
+import com.thegym.warehousemanagementsystem.dtos.LocationRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.UpdateWarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.WarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
-import com.thegym.warehousemanagementsystem.exceptions.DuplicateWarehouseException;
+import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
+import com.thegym.warehousemanagementsystem.services.LocationService;
 import com.thegym.warehousemanagementsystem.services.WarehouseService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.Map;
 @RequestMapping("/api/warehouses")
 @AllArgsConstructor
 public class WarehouseController {
+    private final LocationService locationService;
     private WarehouseService warehouseService;
 
 
@@ -34,15 +37,21 @@ public class WarehouseController {
         return ResponseEntity.ok().body(warehouse);
     }
 
+    @PostMapping("/{warehouseId}/locations")
+    public ResponseEntity<?> createLocation(@PathVariable Long warehouseId, @RequestBody LocationRequestDto locationRequestDto) {
+        var location = locationService.createLocation(warehouseId, locationRequestDto);
+        return ResponseEntity.ok().body(location);
+    }
 
-    @ExceptionHandler(DuplicateWarehouseException.class)
-    public  ResponseEntity<?> handleDuplicateWarehouseException(DuplicateWarehouseException e) {
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> handleDuplicateWarehouseException(ConflictException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Conflict",
                 "message", e.getMessage()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public  ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {
+    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
     }
 }
