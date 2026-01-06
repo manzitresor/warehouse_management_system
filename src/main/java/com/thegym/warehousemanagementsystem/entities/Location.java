@@ -1,0 +1,62 @@
+package com.thegym.warehousemanagementsystem.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.Instant;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "locations")
+public class Location {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "\"row\"", nullable = false, length = 50)
+    private Integer row;
+
+    @Column(name = "section", nullable = false, length = 50)
+    private Integer section;
+
+    @Column(name = "shelf", nullable = false, length = 50)
+    private Integer shelf;
+
+    @Column(name = "location_code", nullable = false, length = 100)
+    private String locationCode;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "warehouse_id", nullable = false)
+    private Warehouse warehouse;
+
+    @Column(name = "version", nullable = false)
+    @Version
+    private Integer version;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_timestamp", nullable = false)
+    private Instant createdTimestamp;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "updated_timestamp", nullable = false)
+    private Instant updatedTimestamp;
+
+    @PrePersist
+    public void setDefaultValues() {
+        this.createdTimestamp = Instant.now();
+        this.updatedTimestamp = Instant.now();
+    }
+
+    @PreUpdate
+    public void updateTimestamps() {
+        this.updatedTimestamp = Instant.now();
+    }
+
+
+}
