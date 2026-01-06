@@ -6,16 +6,13 @@ import com.thegym.warehousemanagementsystem.dtos.WarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
 import com.thegym.warehousemanagementsystem.exceptions.DuplicateWarehouseException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
-import com.thegym.warehousemanagementsystem.repositories.WarehouseRepository;
 import com.thegym.warehousemanagementsystem.services.WarehouseService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -23,7 +20,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class WarehouseController {
     private WarehouseService warehouseService;
-    private WarehouseRepository warehouseRepository;
 
 
     @PostMapping()
