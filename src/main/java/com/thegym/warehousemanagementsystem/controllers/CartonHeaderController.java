@@ -46,10 +46,7 @@ public class CartonHeaderController {
     }
 
 
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<?> handleDuplicateBarcode(ConflictException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Conflict", "message", e.getMessage()));
-    }
+
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {

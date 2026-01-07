@@ -27,4 +27,14 @@ public class GlobalExceptionHandler {
         errors.put("message", "The resource was updated by another transaction");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> handleDuplicateException(ConflictException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Conflict", "message", e.getMessage()));
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+    }
 }
