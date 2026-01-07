@@ -7,6 +7,7 @@ import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.CartonHeaderRepository;
 import com.thegym.warehousemanagementsystem.services.CartonHeaderService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,15 @@ public class CartonHeaderController {
     private final CartonHeaderService cartonHeaderService;
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
+    public ResponseEntity<?> create(@Valid @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
         CartonHeader cartonHeader = cartonHeaderService.create(cartonHeaderRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartonHeader);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@Valid @PathVariable Long id, @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
+        CartonHeader cartonHeader = cartonHeaderService.update(id, cartonHeaderRequestDto);
+        return ResponseEntity.ok().body(cartonHeader);
     }
 
     @ExceptionHandler(ConflictException.class)

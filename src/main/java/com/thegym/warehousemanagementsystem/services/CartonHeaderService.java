@@ -4,8 +4,10 @@ package com.thegym.warehousemanagementsystem.services;
 import com.thegym.warehousemanagementsystem.dtos.CartonHeaderRequestDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
+import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.CartonHeaderRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +26,15 @@ public class CartonHeaderService {
         cartonHeader.setDescription(cartonHeaderRequestDto.getDescription());
 
        return cartonHeaderRepository.save(cartonHeader);
+    }
+
+    public CartonHeader update(Long id, CartonHeaderRequestDto cartonHeaderRequestDto) {
+        CartonHeader  cartonHeader = cartonHeaderRepository.findById(id).orElse(null);
+        if(cartonHeader == null) {
+            throw new ResourceNotFoundException("Carton Header with id "+id+" not found");
+        }
+
+        cartonHeader.setDescription(cartonHeaderRequestDto.getDescription());
+        return cartonHeaderRepository.save(cartonHeader);
     }
 }
