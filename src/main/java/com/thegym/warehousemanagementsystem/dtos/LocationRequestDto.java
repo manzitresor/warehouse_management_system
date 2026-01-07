@@ -8,12 +8,12 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LocationRequestDto {
-    @NotNull
+    @NotNull(message = "row is required")
     private Integer row;
 
-    @NotNull
+    @NotNull(message = "section is required")
     private Integer section;
 
-    @NotNull
+    @NotNull(message = "shelf is required")
     private Integer shelf;
 }
