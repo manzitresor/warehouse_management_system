@@ -17,13 +17,13 @@ public class Location {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "\"row\"", nullable = false, length = 50)
+    @Column(name = "\"row\"", nullable = false)
     private Integer row;
 
-    @Column(name = "section", nullable = false, length = 50)
+    @Column(name = "section", nullable = false)
     private Integer section;
 
-    @Column(name = "shelf", nullable = false, length = 50)
+    @Column(name = "shelf", nullable = false)
     private Integer shelf;
 
     @Column(name = "location_code", nullable = false, length = 100)

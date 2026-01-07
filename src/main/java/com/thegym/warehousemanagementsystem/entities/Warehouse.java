@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,6 +42,9 @@ public class Warehouse {
 
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
+
+    @OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL)
+    private List<Location> locations = new ArrayList<>();
 
     @PrePersist
     public void setDefaultValues() {
