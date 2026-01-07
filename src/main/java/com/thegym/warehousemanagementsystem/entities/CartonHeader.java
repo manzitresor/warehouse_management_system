@@ -1,62 +1,49 @@
 package com.thegym.warehousemanagementsystem.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "warehouses")
-public class Warehouse {
+@Table(name = "carton_headers")
+public class CartonHeader {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Size(max = 50)
-    @Column(name = "warehouse_number", nullable = false, length = 50)
-    private String warehouseNumber;
+    @Column(name = "barcode", nullable = false, unique = true)
+    private String barcode;
 
-    @Size(max = 255)
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @ColumnDefault("true")
-    @Column(name = "active")
-    private Boolean active;
-
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "version", nullable = false)
     @Version
     private Integer version;
 
-    @Column(name = "created_timestamp", nullable = false, updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_timestamp", nullable = false)
     private Instant createdTimestamp;
 
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
 
-    @OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Location> locations = new ArrayList<>();
-
     @PrePersist
     public void setDefaultValues() {
-        this.active = true;
         this.createdTimestamp = Instant.now();
         this.updatedTimestamp = Instant.now();
     }
-
     @PreUpdate
-    public void updateTimestamp() {
+    public void updateTimestamps() {
         this.updatedTimestamp = Instant.now();
     }
-
-
 }

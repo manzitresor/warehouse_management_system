@@ -1,5 +1,6 @@
 package com.thegym.warehousemanagementsystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class Location {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "warehouse_id", nullable = false)
+    @JsonIgnoreProperties("locations")
     private Warehouse warehouse;
 
     @Column(name = "version", nullable = false)
