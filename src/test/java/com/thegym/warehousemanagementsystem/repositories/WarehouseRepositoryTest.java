@@ -87,9 +87,7 @@ public class WarehouseRepositoryTest {
 
             secondLoad.setName("Second update");
 
-            Assertions.assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
-                warehouseRepository.saveAndFlush(secondLoad);
-            });
+            Assertions.assertThrows(ObjectOptimisticLockingFailureException.class, () -> warehouseRepository.saveAndFlush(secondLoad));
         }
 
 

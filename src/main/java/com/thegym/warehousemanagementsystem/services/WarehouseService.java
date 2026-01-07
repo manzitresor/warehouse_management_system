@@ -29,7 +29,6 @@ public class WarehouseService {
 
     @Transactional
     public Warehouse update(Long id, UpdateWarehouseRequestDto dto) {
-
         Warehouse warehouse = warehouseRepository.findById(id).orElse(null);
         if (warehouse == null) {
             throw new ResourceNotFoundException("Warehouse not found");
@@ -37,7 +36,7 @@ public class WarehouseService {
 
         warehouse.setName(dto.getName());
         warehouse.setActive(dto.getActive());
-        return warehouse;
+        return warehouseRepository.save(warehouse);
     }
 
 }
