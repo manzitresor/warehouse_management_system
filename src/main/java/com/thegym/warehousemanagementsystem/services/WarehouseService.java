@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class WarehouseService {
     private final WarehouseRepository warehouseRepository;
 
-    public Warehouse createWarehouse(WarehouseRequestDto warehouseRequestDto) {
+    public Warehouse create(WarehouseRequestDto warehouseRequestDto) {
         if (warehouseRepository.existsWarehouseByWarehouseNumber(warehouseRequestDto.getWarehouseNumber())) {
             throw new ConflictException("Warehouse with number " + warehouseRequestDto.getWarehouseNumber() + " already exists.");
         }

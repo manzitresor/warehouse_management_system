@@ -18,7 +18,7 @@ public class LocationService {
     private WarehouseRepository warehouseRepository;
 
     @Transactional
-    public Location createLocation(Long warehouseId, LocationRequestDto locationRequestDto) {
+    public Location create(Long warehouseId, LocationRequestDto locationRequestDto) {
         var warehouse = warehouseRepository.findById(warehouseId).orElse(null);
         if(warehouse == null){
             throw new ResourceNotFoundException("Warehouse not found");

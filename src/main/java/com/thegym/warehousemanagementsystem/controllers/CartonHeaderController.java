@@ -2,11 +2,15 @@ package com.thegym.warehousemanagementsystem.controllers;
 
 
 import com.thegym.warehousemanagementsystem.dtos.CartonHeaderRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.SsccRequestDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
+import com.thegym.warehousemanagementsystem.entities.Sscc;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.CartonHeaderRepository;
+import com.thegym.warehousemanagementsystem.repositories.SsccRepository;
 import com.thegym.warehousemanagementsystem.services.CartonHeaderService;
+import com.thegym.warehousemanagementsystem.services.SsccService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,18 +25,26 @@ import java.util.Map;
 public class CartonHeaderController {
 
     private final CartonHeaderService cartonHeaderService;
+    private final SsccService ssccService;
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
+    public ResponseEntity<?> createCartonHeader(@Valid @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
         CartonHeader cartonHeader = cartonHeaderService.create(cartonHeaderRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartonHeader);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @PathVariable Long id, @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
+    public ResponseEntity<?> updateCartonHeader(@Valid @PathVariable Long id, @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
         CartonHeader cartonHeader = cartonHeaderService.update(id, cartonHeaderRequestDto);
         return ResponseEntity.ok().body(cartonHeader);
     }
+
+    @PostMapping("/{id}/ssccs")
+    public ResponseEntity<?> createSsccs(@Valid @PathVariable Long id, @RequestBody SsccRequestDto createSssccRequiredDto){
+        Sscc sscc = ssccService.create(id,createSssccRequiredDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(sscc);
+    }
+
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<?> handleDuplicateBarcode(ConflictException e) {

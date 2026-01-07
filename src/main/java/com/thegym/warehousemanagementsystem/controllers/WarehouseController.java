@@ -27,7 +27,7 @@ public class WarehouseController {
 
     @PostMapping()
     public ResponseEntity<Warehouse> createWarehouse(@Valid @RequestBody WarehouseRequestDto request) {
-        var warehouse = warehouseService.createWarehouse(request);
+        var warehouse = warehouseService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(warehouse);
     }
 
@@ -39,7 +39,7 @@ public class WarehouseController {
 
     @PostMapping("/{warehouseId}/locations")
     public ResponseEntity<?> createLocation(@PathVariable Long warehouseId, @RequestBody LocationRequestDto locationRequestDto) {
-        var location = locationService.createLocation(warehouseId, locationRequestDto);
+        var location = locationService.create(warehouseId, locationRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(location);
     }
 

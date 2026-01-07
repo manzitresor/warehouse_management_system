@@ -44,7 +44,7 @@ public class WarehouseServiceTest {
         WarehouseRequestDto warehouseRequestDto = new WarehouseRequestDto("Warehouse test","120");
 
         when(warehouseRepository.save(any(Warehouse.class))).thenReturn(warehouse);
-        Warehouse savedWarehouse = warehouseService.createWarehouse(warehouseRequestDto);
+        Warehouse savedWarehouse = warehouseService.create(warehouseRequestDto);
 
         Assertions.assertNotNull(savedWarehouse);
         Assertions.assertEquals("Warehouse test", savedWarehouse.getName());
