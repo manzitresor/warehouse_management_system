@@ -4,54 +4,44 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "locations")
-public class Location {
+@Table(name = "items")
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "\"row\"", nullable = false)
-    private Integer row;
+    @Column(name = "item_number", nullable = false)
+    private String itemNumber;
 
-    @Column(name = "section", nullable = false)
-    private Integer section;
-
-    @Column(name = "shelf", nullable = false)
-    private Integer shelf;
-
-    @Column(name = "location_code", nullable = false, length = 100)
-    private String locationCode;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "warehouse_id", nullable = false)
-    @JsonIgnoreProperties("locations")
-    private Warehouse warehouse;
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
     @Column(name = "version", nullable = false)
     @Version
     private Integer version;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "location_id", nullable = false)
+    @JsonIgnoreProperties("items")
+    private Location location;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "carton_header_id", nullable = false)
+    @JsonIgnoreProperties("items")
+    private CartonHeader cartonHeader;
+
     @Column(name = "created_timestamp", nullable = false)
     private Instant createdTimestamp;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
-
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    private Set<Item> items = new LinkedHashSet<>();
 
     @PrePersist
     public void setDefaultValues() {
@@ -63,6 +53,4 @@ public class Location {
     public void updateTimestamps() {
         this.updatedTimestamp = Instant.now();
     }
-
-
 }

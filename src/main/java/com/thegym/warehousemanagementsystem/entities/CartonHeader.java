@@ -7,7 +7,9 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,16 +31,17 @@ public class CartonHeader {
     @Version
     private Integer version;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_timestamp", nullable = false)
     private Instant createdTimestamp;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
 
     @OneToMany(mappedBy = "cartonHeader",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sscc> ssccs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cartonHeader", cascade = CascadeType.ALL)
+    private Set<Item> items = new LinkedHashSet<>();
 
     @PrePersist
     public void setDefaultValues() {
