@@ -2,6 +2,7 @@ package com.thegym.warehousemanagementsystem.repositories;
 
 import com.thegym.warehousemanagementsystem.entities.Location;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -55,6 +57,24 @@ public class LocationRepositoryTest {
         locationRepository.saveAndFlush(location);
         boolean exists = locationRepository.existsByWarehouseIdAndLocationCode(warehouse.getId(), location.getLocationCode());
         Assertions.assertTrue(exists);
+    }
+
+    @Test
+    @DisplayName("Location code should be unique")
+    public void location_code_should_be_unique(){
+        locationRepository.saveAndFlush(location);
+        Location duplicate = new Location();
+        duplicate.setRow(1);
+        duplicate.setSection(2);
+        duplicate.setShelf(4);
+        duplicate.setLocationCode(location.getLocationCode());
+        duplicate.setWarehouse(warehouse);
+
+        Assertions.assertThrows(
+                DataIntegrityViolationException.class,
+                () -> locationRepository.saveAndFlush(duplicate)
+        );
+
     }
 
 }
