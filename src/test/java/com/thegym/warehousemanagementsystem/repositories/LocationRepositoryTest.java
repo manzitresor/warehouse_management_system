@@ -67,7 +67,6 @@ public class LocationRepositoryTest {
         duplicate.setSection(2);
         duplicate.setShelf(4);
         duplicate.setLocationCode(location.getLocationCode());
-        duplicate.setWarehouse(warehouse);
 
         Assertions.assertThrows(
                 DataIntegrityViolationException.class,

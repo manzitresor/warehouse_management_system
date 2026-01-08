@@ -38,8 +38,7 @@ public class LocationService {
 
 
 
-        locationRepository.save(location);
-        return location;
+        return locationRepository.save(location);
     }
 
 }
