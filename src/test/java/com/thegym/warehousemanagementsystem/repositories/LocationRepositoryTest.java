@@ -2,7 +2,6 @@ package com.thegym.warehousemanagementsystem.repositories;
 
 import com.thegym.warehousemanagementsystem.entities.Location;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
