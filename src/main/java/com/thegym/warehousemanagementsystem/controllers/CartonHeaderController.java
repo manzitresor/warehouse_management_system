@@ -45,11 +45,4 @@ public class CartonHeaderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(sscc);
     }
 
-
-
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
-    }
 }
