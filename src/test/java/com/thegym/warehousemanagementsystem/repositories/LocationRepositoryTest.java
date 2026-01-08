@@ -26,13 +26,15 @@ public class LocationRepositoryTest {
         warehouse = new Warehouse();
         warehouse.setName("Main Warehouse");
         warehouse.setWarehouseNumber("4");
+        warehouse = warehouseRepository.saveAndFlush(warehouse);
+
 
         location = new Location();
         location.setRow(1);
         location.setSection(2);
         location.setShelf(4);
         location.setWarehouse(warehouse);
-        warehouse = warehouseRepository.saveAndFlush(warehouse);
+
 
         String locationCode = location.getRow() + "-" + location.getSection() + "-" + location.getShelf();
         location.setLocationCode(locationCode);
