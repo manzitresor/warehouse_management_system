@@ -1,14 +1,14 @@
 package com.thegym.warehousemanagementsystem.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -21,27 +21,35 @@ public class CartonHeader {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "barcode", nullable = false, unique = true)
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "barcode", nullable = false)
     private String barcode;
 
+    @Size(max = 255)
     @Column(name = "description")
     private String description;
 
+    @NotNull
     @Column(name = "version", nullable = false)
     @Version
     private Integer version;
 
+    @NotNull
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_timestamp", nullable = false)
     private Instant createdTimestamp;
 
+    @NotNull
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
 
     @OneToMany(mappedBy = "cartonHeader",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Sscc> ssccs = new ArrayList<>();
+    private Set<Item> items = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "cartonHeader", cascade = CascadeType.ALL)
-    private Set<Item> items = new LinkedHashSet<>();
+    private Set<Sscc> ssccs = new LinkedHashSet<>();
 
     @PrePersist
     public void setDefaultValues() {
@@ -52,4 +60,5 @@ public class CartonHeader {
     public void updateTimestamps() {
         this.updatedTimestamp = Instant.now();
     }
+
 }
