@@ -1,7 +1,6 @@
 package com.thegym.warehousemanagementsystem.exceptions;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,8 +28,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<?> handleDuplicateException(ConflictException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Conflict", "message", e.getMessage()));
+    public ResponseEntity<Map<String,String>> handleDuplicateException(ConflictException e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "Conflict");
+        errors.put("message", e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
