@@ -80,9 +80,9 @@ public class ReceiveItemTest {
     public void should_create_item() {
         ReceiveItemRequestDto requestDto = new ReceiveItemRequestDto("4", "003871234567890122", "1-2-4");
 
-        when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(warehouse);
-        when(ssccRepository.findBySscc("003871234567890122")).thenReturn(sscc);
-        when(locationRepository.findByLocationCode("1-2-4")).thenReturn(location);
+        when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(Optional.of(warehouse));
+        when(ssccRepository.findBySscc("003871234567890122")).thenReturn(Optional.of(sscc));
+        when(locationRepository.findByLocationCode("1-2-4")).thenReturn(Optional.of(location));
         when(itemRepository.findByItemNumberAndLocation(any(), any())).thenReturn(Optional.empty());
         when(itemRepository.save(any(Item.class))).thenReturn(item);
 
@@ -97,9 +97,9 @@ public class ReceiveItemTest {
     public void should_increment_quantity_if_item_exists(){
         ReceiveItemRequestDto requestDto = new ReceiveItemRequestDto("4", "003871234567890122", "1-2-4");
 
-        when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(warehouse);
-        when(ssccRepository.findBySscc("003871234567890122")).thenReturn(sscc);
-        when(locationRepository.findByLocationCode("1-2-4")).thenReturn(location);
+        when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(Optional.of(warehouse));
+        when(ssccRepository.findBySscc("003871234567890122")).thenReturn(Optional.of(sscc));
+        when(locationRepository.findByLocationCode("1-2-4")).thenReturn(Optional.of(location));
         when(itemRepository.findByItemNumberAndLocation(cartonHeader.getBarcode(),location)).thenReturn(Optional.of(item));
 
         item.setQuantity(item.getQuantity() + 1);
@@ -115,10 +115,10 @@ public class ReceiveItemTest {
     public void should_throw_if_sscc_already_received() {
         ReceiveItemRequestDto requestDto = new ReceiveItemRequestDto("4", "003871234567890122", "1-2-4");
 
-        when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(warehouse);
+        when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(Optional.of(warehouse));
 
         sscc.setReceivedTimestamp(Instant.now());
-        when(ssccRepository.findBySscc("003871234567890122")).thenReturn(sscc);
+        when(ssccRepository.findBySscc("003871234567890122")).thenReturn(Optional.of(sscc));
 
         Assertions.assertThrows(ConflictException.class,()-> receiveItemService.create(requestDto));
     }

@@ -28,7 +28,7 @@ public class ReceiveItemService {
 
     @Transactional
     public Item create(ReceiveItemRequestDto requestDto) {
-        var warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber());
+        var warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber()).orElse(null);
         if (warehouse == null) {
             throw new ResourceNotFoundException("Warehouse not found or is inactive.");
         }
@@ -37,7 +37,7 @@ public class ReceiveItemService {
             throw new ConflictException("Warehouse "+warehouse.getWarehouseNumber()+" is inactive.");
         }
 
-        var sscc = ssccRepository.findBySscc(requestDto.getSscc());
+        var sscc = ssccRepository.findBySscc(requestDto.getSscc()).orElse(null);
         if (sscc == null ) {
             throw new ResourceNotFoundException("Sscc not found");
         }
@@ -48,7 +48,7 @@ public class ReceiveItemService {
 
 
         var cartonHeader = sscc.getCartonHeader();
-        var location = locationRepository.findByLocationCode(requestDto.getLocationCode());
+        var location = locationRepository.findByLocationCode(requestDto.getLocationCode()).orElse(null);
         if(location == null) {
             throw new ResourceNotFoundException("Location not found.");
         }
