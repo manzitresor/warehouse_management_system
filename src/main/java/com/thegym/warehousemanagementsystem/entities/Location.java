@@ -41,8 +41,8 @@ public class Location {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnoreProperties("locations")
     @JoinColumn(name = "warehouse_id", nullable = false)
+    @JsonIgnoreProperties("locations")
     private Warehouse warehouse;
 
     @NotNull

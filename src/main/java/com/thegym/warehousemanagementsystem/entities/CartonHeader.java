@@ -1,5 +1,6 @@
 package com.thegym.warehousemanagementsystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -46,9 +47,11 @@ public class CartonHeader {
     private Instant updatedTimestamp;
 
     @OneToMany(mappedBy = "cartonHeader",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("cartonHeader")
     private Set<Item> items = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "cartonHeader", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("cartonHeader")
     private Set<Sscc> ssccs = new LinkedHashSet<>();
 
     @PrePersist
