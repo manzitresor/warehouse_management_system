@@ -20,4 +20,10 @@ public class InventoryController {
         var items = inventoryService.getAllItems(warehouseNumber);
         return ResponseEntity.ok().body(items);
     }
+
+    @GetMapping("/{itemNumber}")
+    public ResponseEntity<?> getItem(@PathVariable String warehouseNumber, @PathVariable String itemNumber, @RequestParam String locationCode) {
+        var  item = inventoryService.getItem(warehouseNumber, itemNumber, locationCode);
+        return ResponseEntity.ok().body(item);
+    }
 }

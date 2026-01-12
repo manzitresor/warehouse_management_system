@@ -38,5 +38,28 @@ public class InventoryService {
                 .toList();
     }
 
+    public InventoryItemDto getItem(String warehouseNumber, String itemNumber, String locationCode){
+        var warehouse = warehouseRepository.findByWarehouseNumber(warehouseNumber).orElse(null);
+        if(warehouse == null){
+            throw new ResourceNotFoundException("Warehouse not found");
+        }
 
+        var location = locationRepository.findByLocationCode(locationCode).orElse(null);
+        if(location == null){
+            throw new ResourceNotFoundException("Location not found");
+        }
+
+        Item item = itemRepository.findByWarehouseNumberAndItemNumberAndLocationCode(warehouseNumber,itemNumber,locationCode).orElse(null);
+        if(item == null){
+            throw new ResourceNotFoundException("Item not found");
+        }
+
+        return new InventoryItemDto(
+                item.getItemNumber(),
+                item.getLocation().getLocationCode(),
+                item.getCartonHeader().getBarcode(),
+                item.getCartonHeader().getDescription(),
+                item.getQuantity()
+        );
+    }
 }
