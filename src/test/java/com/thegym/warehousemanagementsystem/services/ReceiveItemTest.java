@@ -76,8 +76,8 @@ public class ReceiveItemTest {
     }
 
     @Test
-    @DisplayName("Should create item successful")
-    public void receiveItem_Create_Successful() {
+    @DisplayName("Should create item")
+    public void should_create_item() {
         ReceiveItemRequestDto requestDto = new ReceiveItemRequestDto("4", "003871234567890122", "1-2-4");
 
         when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(warehouse);
@@ -94,7 +94,7 @@ public class ReceiveItemTest {
 
     @Test
     @DisplayName("Should increment quantity if already exists")
-    public void receiveItem_Create_IncrementQuantity() {
+    public void should_increment_quantity_if_item_exists(){
         ReceiveItemRequestDto requestDto = new ReceiveItemRequestDto("4", "003871234567890122", "1-2-4");
 
         when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(warehouse);
@@ -112,7 +112,7 @@ public class ReceiveItemTest {
 
     @Test
     @DisplayName("Should not create sscc twice")
-    public void receiveItem_Create_SssccTwice() {
+    public void should_throw_if_sscc_already_received() {
         ReceiveItemRequestDto requestDto = new ReceiveItemRequestDto("4", "003871234567890122", "1-2-4");
 
         when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(warehouse);
