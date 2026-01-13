@@ -66,14 +66,14 @@ public class ReceiveItemService {
         return item;
     }
 
-    private void saveHistory(CartonHeader cartonHeader, Warehouse warehouse, Sscc sscc, Item existingItem) {
+    private void saveHistory(CartonHeader cartonHeader, Warehouse warehouse, Sscc sscc, Item item) {
         StockHistory stockHistory = new StockHistory();
         stockHistory.setAction(Action.RECEIVE);
         stockHistory.setItemNumber(cartonHeader.getBarcode());
         stockHistory.setWarehouseNumber(warehouse.getWarehouseNumber());
         stockHistory.setSscc(sscc.getSscc());
-        stockHistory.setItemNumber(existingItem.getItemNumber());
-        stockHistory.setQuantityChange(existingItem.getQuantity());
+        stockHistory.setItemNumber(item.getItemNumber());
+        stockHistory.setQuantityChange(1);
         stockHistoryRepository.save(stockHistory);
     }
 

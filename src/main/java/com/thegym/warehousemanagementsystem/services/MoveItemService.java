@@ -48,7 +48,7 @@ public class MoveItemService {
         fromItem.setQuantity(fromItem.getQuantity() - requestDto.getQuantity());
         itemRepository.save(fromItem);
         itemRepository.save(toItem);
-        saveHistory(fromItem.getItemNumber(), warehouse.getWarehouseNumber(), fromItem.getQuantity(), fromItem.getLocation().getLocationCode(), toItem.getLocation().getLocationCode());
+        saveHistory(fromItem.getItemNumber(), warehouse.getWarehouseNumber(), requestDto.getQuantity(), fromItem.getLocation().getLocationCode(), toItem.getLocation().getLocationCode());
 
         return new ItemResponseDto(
                 toItem.getItemNumber(),
