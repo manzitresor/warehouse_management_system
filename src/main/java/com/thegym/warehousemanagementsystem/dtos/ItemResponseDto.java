@@ -6,8 +6,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class InventoryItemsListDto {
+public class ItemResponseDto {
     private String itemNumber;
     private String locationCode;
-    private Integer quantity;
+    private String cartonBarcode;
+    private String cartonDescription;
+    private int quantity;
 }

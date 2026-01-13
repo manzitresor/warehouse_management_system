@@ -1,8 +1,8 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.InventoryItemDto;
-import com.thegym.warehousemanagementsystem.dtos.InventoryItemsListDto;
+import com.thegym.warehousemanagementsystem.dtos.ItemResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.ItemListResponseDto;
 import com.thegym.warehousemanagementsystem.entities.Item;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.ItemRepository;
@@ -23,14 +23,14 @@ public class InventoryService {
     private final LocationRepository locationRepository;
 
     @Transactional
-    public List<InventoryItemsListDto> getAllItems(String warehouseNumber){
+    public List<ItemListResponseDto> getAllItems(String warehouseNumber){
         var warehouse = warehouseRepository.findByWarehouseNumber(warehouseNumber).orElse(null);
         if(warehouse == null){
             throw new ResourceNotFoundException("Warehouse not found");
         }
         List<Item> items = itemRepository.findAllByWarehouseNumber(warehouse.getWarehouseNumber());
         return items.stream()
-                .map(item -> new InventoryItemsListDto(
+                .map(item -> new ItemListResponseDto(
                         item.getItemNumber(),
                         item.getLocation().getLocationCode(),
                         item.getQuantity()
@@ -38,7 +38,7 @@ public class InventoryService {
                 .toList();
     }
 
-    public InventoryItemDto getItem(String warehouseNumber, String itemNumber, String locationCode){
+    public ItemResponseDto getItem(String warehouseNumber, String itemNumber, String locationCode){
         var warehouse = warehouseRepository.findByWarehouseNumber(warehouseNumber).orElse(null);
         if(warehouse == null){
             throw new ResourceNotFoundException("Warehouse not found");
@@ -54,7 +54,7 @@ public class InventoryService {
             throw new ResourceNotFoundException("Item not found");
         }
 
-        return new InventoryItemDto(
+        return new ItemResponseDto(
                 item.getItemNumber(),
                 item.getLocation().getLocationCode(),
                 item.getCartonHeader().getBarcode(),
