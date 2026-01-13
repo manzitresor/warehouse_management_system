@@ -40,4 +40,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
     }
+
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<?> handleInputInvalidException(InvalidInputException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+    }
 }
