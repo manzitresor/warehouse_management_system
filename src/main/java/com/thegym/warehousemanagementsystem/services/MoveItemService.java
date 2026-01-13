@@ -2,7 +2,6 @@ package com.thegym.warehousemanagementsystem.services;
 
 import com.thegym.warehousemanagementsystem.dtos.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.MoveItemRequestDto;
-import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.InvalidInputException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.ItemRepository;
@@ -36,7 +35,7 @@ public class MoveItemService {
 
         var fromItem = itemRepository.findByItemNumberAndLocation(requestDto.getItemNumber(), fromLocation).orElseThrow(()->new ResourceNotFoundException("Item Not Found"));
         if(fromItem.getQuantity() < requestDto.getQuantity()){
-            throw new InvalidInputException("Insufficient quantity"); // this error to be changed
+            throw new InvalidInputException("Insufficient quantity");
         }
 
         var toItem = itemRepository.findByItemNumberAndLocation(requestDto.getItemNumber(), toLocation).orElseThrow(()->new ResourceNotFoundException("Destination Item Not Found"));
