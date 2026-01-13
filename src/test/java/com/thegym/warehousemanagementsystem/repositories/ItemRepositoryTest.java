@@ -14,6 +14,8 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.List;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ItemRepositoryTest {
@@ -38,7 +40,7 @@ public class ItemRepositoryTest {
     @BeforeEach
     void setup() {
         Warehouse warehouse = new Warehouse();
-        warehouse.setWarehouseNumber("W1");
+        warehouse.setWarehouseNumber("w1");
         warehouse.setName("Main Warehouse");
         warehouse.setActive(true);
         warehouse = warehouseRepository.saveAndFlush(warehouse);
@@ -52,7 +54,7 @@ public class ItemRepositoryTest {
         location = locationRepository.saveAndFlush(loc);
 
         CartonHeader header = new CartonHeader();
-        header.setBarcode("40123456");
+        header.setBarcode("40123450");
         header.setDescription("Test carton");
         cartonHeader = cartonHeaderRepository.saveAndFlush(header);
 
@@ -89,6 +91,25 @@ public class ItemRepositoryTest {
     public void item_create_constraints_negative() {
         item.setQuantity(-5);
         Assertions.assertThrows(DataIntegrityViolationException.class,  () -> itemRepository.saveAndFlush(item));
+    }
+
+    @Test
+    @DisplayName("Should get List of items in warehouse")
+    public void item_getAll_ReturnItems() {
+        itemRepository.saveAndFlush(item);
+
+        List<Item> items = itemRepository.findAllByWarehouseNumber("w1");
+        Assertions.assertNotNull(items);
+    }
+
+    @Test
+    @DisplayName("Should get specific in warehouse")
+    public void item_getOne_By_WarehouseNumber_ItemNumber_LocationCode_ReturnItem() {
+        itemRepository.saveAndFlush(item);
+
+        var returnItem = itemRepository.findByWarehouseNumberAndItemNumberAndLocationCode("w1","40123456","1-1-1");
+        Assertions.assertNotNull(returnItem);
+        Assertions.assertEquals("40123456", returnItem.get().getItemNumber());
     }
 
 }
