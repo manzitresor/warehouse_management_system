@@ -103,7 +103,7 @@ public class ItemRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should get List of items in warehouse")
+    @DisplayName("Should get specific in warehouse")
     public void item_getOne_By_WarehouseNumber_ItemNumber_LocationCode_ReturnItem() {
         itemRepository.saveAndFlush(item);
 
