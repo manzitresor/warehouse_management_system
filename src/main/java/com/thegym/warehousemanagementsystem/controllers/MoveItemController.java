@@ -1,8 +1,8 @@
 package com.thegym.warehousemanagementsystem.controllers;
 
 
-import com.thegym.warehousemanagementsystem.dtos.ItemResponseDto;
-import com.thegym.warehousemanagementsystem.dtos.MoveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.MoveItemRequestDto;
 import com.thegym.warehousemanagementsystem.services.MoveItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,8 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.LocationRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.LocationRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.LocationResponseDto;
 import com.thegym.warehousemanagementsystem.entities.Location;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
@@ -18,7 +19,7 @@ public class LocationService {
     private WarehouseRepository warehouseRepository;
 
     @Transactional
-    public Location create(Long warehouseId, LocationRequestDto locationRequestDto) {
+    public LocationResponseDto create(Long warehouseId, LocationRequestDto locationRequestDto) {
         var warehouse = warehouseRepository.findById(warehouseId).orElse(null);
         if(warehouse == null){
             throw new ResourceNotFoundException("Warehouse not found");
@@ -36,9 +37,15 @@ public class LocationService {
         location.setShelf(locationRequestDto.getShelf());
         location.setLocationCode(locationCode);
 
+        locationRepository.save(location);
 
 
-        return locationRepository.save(location);
+        return new LocationResponseDto(
+                location.getRow(),
+                location.getSection(),
+                location.getSection(),
+                location.getLocationCode()
+        );
     }
 
 }
