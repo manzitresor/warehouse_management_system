@@ -4,6 +4,7 @@ package com.thegym.warehousemanagementsystem.services;
 import com.thegym.warehousemanagementsystem.dtos.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.MoveItemRequestDto;
 import com.thegym.warehousemanagementsystem.entities.*;
+import com.thegym.warehousemanagementsystem.exceptions.InvalidInputException;
 import com.thegym.warehousemanagementsystem.repositories.ItemRepository;
 import com.thegym.warehousemanagementsystem.repositories.LocationRepository;
 import com.thegym.warehousemanagementsystem.repositories.StockHistoryRepository;
@@ -97,4 +98,25 @@ public class MoveItemServiceTest {
         verify(itemRepository, times(2)).save(any(Item.class));
         verify(stockHistoryRepository, times(1)).save(any(StockHistory.class));
     }
+
+    @Test
+    @DisplayName("Should throw exception if warehouse is not active")
+    void moveItem_InactiveWarehouse() {
+        warehouse.setActive(false);
+        when(warehouseRepository.findByWarehouseNumber("W1")).thenReturn(Optional.of(warehouse));
+
+        Assertions.assertThrows(InvalidInputException.class, () -> moveItemService.moveItem(requestDto));
+    }
+
+    @Test
+    @DisplayName("Should throw exception if quantity is insufficient")
+    void moveItem_InsufficientQuantity() {
+        requestDto.setQuantity(50);
+
+        when(warehouseRepository.findByWarehouseNumber("W1")).thenReturn(Optional.of(warehouse));
+        when(locationRepository.findLocationByLocationCodeAndWarehouse(anyString(), any())).thenReturn(Optional.of(fromLocation));
+
+        Assertions.assertThrows(InvalidInputException.class, () -> moveItemService.moveItem(requestDto));
+    }
+
 }
