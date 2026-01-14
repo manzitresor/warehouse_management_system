@@ -28,13 +28,14 @@ public class CartonHeaderService {
         return new CartonHeaderResponseDto(cartonHeader.getBarcode(),cartonHeader.getDescription());
     }
 
-    public CartonHeader update(Long id, CartonHeaderRequestDto cartonHeaderRequestDto) {
-        CartonHeader cartonHeader = cartonHeaderRepository.findById(id).orElse(null);
+    public CartonHeaderResponseDto update(String barcode, CartonHeaderRequestDto cartonHeaderRequestDto) {
+        CartonHeader cartonHeader = cartonHeaderRepository.findCartonHeaderByBarcode(barcode).orElse(null);
         if (cartonHeader == null) {
-            throw new ResourceNotFoundException("Carton Header with id " + id + " not found");
+            throw new ResourceNotFoundException("Carton Header with barcode " + barcode + " not found");
         }
 
         cartonHeader.setDescription(cartonHeaderRequestDto.getDescription());
-        return cartonHeaderRepository.save(cartonHeader);
+         cartonHeaderRepository.save(cartonHeader);
+         return new CartonHeaderResponseDto(cartonHeader.getBarcode(),cartonHeader.getDescription());
     }
 }

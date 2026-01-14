@@ -18,8 +18,8 @@ public class SsccService {
     private CartonHeaderRepository cartonHeaderRepository;
 
 
-    public Sscc create(Long id, SsccRequestDto ssccRequestDto) {
-        CartonHeader cartonHeader = cartonHeaderRepository.findById(id).orElse(null);
+    public Sscc create(String barcode, SsccRequestDto ssccRequestDto) {
+        CartonHeader cartonHeader = cartonHeaderRepository.findCartonHeaderByBarcode(barcode).orElse(null);
         if(cartonHeader == null ){
             throw new ResourceNotFoundException("Carton header not found");
         }

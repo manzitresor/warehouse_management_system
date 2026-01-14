@@ -34,15 +34,15 @@ public class CartonHeaderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartonHeader);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateCartonHeader(@Valid @PathVariable Long id, @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
-        CartonHeader cartonHeader = cartonHeaderService.update(id, cartonHeaderRequestDto);
+    @PutMapping("/{barcode}")
+    public ResponseEntity<CartonHeaderResponseDto> updateCartonHeader(@Valid @PathVariable String barcode, @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
+        CartonHeaderResponseDto cartonHeader = cartonHeaderService.update(barcode, cartonHeaderRequestDto);
         return ResponseEntity.ok().body(cartonHeader);
     }
 
-    @PostMapping("/{id}/ssccs")
-    public ResponseEntity<?> createSsccs(@Valid @PathVariable Long id, @RequestBody SsccRequestDto createSssccRequiredDto){
-        Sscc sscc = ssccService.create(id,createSssccRequiredDto);
+    @PostMapping("/{barcode}/ssccs")
+    public ResponseEntity<?> createSsccs(@Valid @PathVariable String barcode, @RequestBody SsccRequestDto createSssccRequiredDto){
+        Sscc sscc = ssccService.create(barcode,createSssccRequiredDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(sscc);
     }
 
