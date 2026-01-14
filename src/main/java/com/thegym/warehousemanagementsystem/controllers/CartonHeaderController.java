@@ -2,6 +2,7 @@ package com.thegym.warehousemanagementsystem.controllers;
 
 
 import com.thegym.warehousemanagementsystem.dtos.CartonHeaderRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.CartonHeaderResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.SsccRequestDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
 import com.thegym.warehousemanagementsystem.entities.Sscc;
@@ -28,8 +29,8 @@ public class CartonHeaderController {
     private final SsccService ssccService;
 
     @PostMapping()
-    public ResponseEntity<?> createCartonHeader(@Valid @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
-        CartonHeader cartonHeader = cartonHeaderService.create(cartonHeaderRequestDto);
+    public ResponseEntity<CartonHeaderResponseDto> createCartonHeader(@Valid @RequestBody CartonHeaderRequestDto cartonHeaderRequestDto) {
+        CartonHeaderResponseDto cartonHeader = cartonHeaderService.create(cartonHeaderRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(cartonHeader);
     }
 
