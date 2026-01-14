@@ -1,8 +1,8 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.UpdateWarehouseRequestDto;
-import com.thegym.warehousemanagementsystem.dtos.WarehouseRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.UpdateWarehouseRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.WarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.WarehouseRepository;

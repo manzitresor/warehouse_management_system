@@ -1,4 +1,4 @@
-package com.thegym.warehousemanagementsystem.dtos;
+package com.thegym.warehousemanagementsystem.dtos.requestDto;
 
 
 import jakarta.validation.constraints.NotBlank;

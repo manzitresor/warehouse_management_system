@@ -1,6 +1,7 @@
 package com.thegym.warehousemanagementsystem.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,25 +22,32 @@ public class Warehouse {
     private Long id;
 
     @Size(max = 50)
+    @NotNull
     @Column(name = "warehouse_number", nullable = false, length = 50)
     private String warehouseNumber;
 
     @Size(max = 255)
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
     @ColumnDefault("true")
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private Boolean active;
 
-
+    @NotNull
     @Column(name = "version", nullable = false)
     @Version
     private Integer version;
 
-    @Column(name = "created_timestamp", nullable = false, updatable = false)
+    @NotNull
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_timestamp", nullable = false)
     private Instant createdTimestamp;
 
+    @NotNull
+    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
 
@@ -57,6 +65,5 @@ public class Warehouse {
     public void updateTimestamp() {
         this.updatedTimestamp = Instant.now();
     }
-
 
 }

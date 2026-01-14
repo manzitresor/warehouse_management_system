@@ -1,4 +1,4 @@
-package com.thegym.warehousemanagementsystem.dtos;
+package com.thegym.warehousemanagementsystem.dtos.requestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

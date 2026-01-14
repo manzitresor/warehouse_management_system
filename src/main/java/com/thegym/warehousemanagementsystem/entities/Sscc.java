@@ -1,10 +1,7 @@
 package com.thegym.warehousemanagementsystem.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -21,7 +18,7 @@ public class Sscc {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "sscc", nullable = false)
+    @Column(name = "sscc", nullable = false,unique = true)
     private String sscc;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
