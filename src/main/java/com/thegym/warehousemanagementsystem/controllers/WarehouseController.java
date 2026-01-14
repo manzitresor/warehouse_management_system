@@ -1,10 +1,10 @@
 package com.thegym.warehousemanagementsystem.controllers;
 
 
-import com.thegym.warehousemanagementsystem.dtos.LocationRequestDto;
-import com.thegym.warehousemanagementsystem.dtos.LocationResponseDto;
-import com.thegym.warehousemanagementsystem.dtos.UpdateWarehouseRequestDto;
-import com.thegym.warehousemanagementsystem.dtos.WarehouseRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.LocationRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.LocationResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.UpdateWarehouseRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.WarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
 import com.thegym.warehousemanagementsystem.services.LocationService;
 import com.thegym.warehousemanagementsystem.services.WarehouseService;

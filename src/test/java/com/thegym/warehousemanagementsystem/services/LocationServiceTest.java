@@ -1,6 +1,6 @@
 package com.thegym.warehousemanagementsystem.services;
 
-import com.thegym.warehousemanagementsystem.dtos.LocationRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.LocationRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Location;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;

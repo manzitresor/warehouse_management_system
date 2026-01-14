@@ -1,14 +1,13 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.ReceiveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.ReceiveItemRequestDto;
 import com.thegym.warehousemanagementsystem.entities.*;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

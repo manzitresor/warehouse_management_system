@@ -1,8 +1,8 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.CartonHeaderRequestDto;
-import com.thegym.warehousemanagementsystem.dtos.CartonHeaderResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderResponseDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;

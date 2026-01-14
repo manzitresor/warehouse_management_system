@@ -1,15 +1,10 @@
 package com.thegym.warehousemanagementsystem.controllers;
 
 
-import com.thegym.warehousemanagementsystem.dtos.CartonHeaderRequestDto;
-import com.thegym.warehousemanagementsystem.dtos.CartonHeaderResponseDto;
-import com.thegym.warehousemanagementsystem.dtos.SsccRequestDto;
-import com.thegym.warehousemanagementsystem.entities.CartonHeader;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.SsccRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Sscc;
-import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
-import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
-import com.thegym.warehousemanagementsystem.repositories.CartonHeaderRepository;
-import com.thegym.warehousemanagementsystem.repositories.SsccRepository;
 import com.thegym.warehousemanagementsystem.services.CartonHeaderService;
 import com.thegym.warehousemanagementsystem.services.SsccService;
 import jakarta.validation.Valid;
@@ -17,8 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/carton-headers")

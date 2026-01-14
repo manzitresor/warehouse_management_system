@@ -1,8 +1,8 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.ItemResponseDto;
-import com.thegym.warehousemanagementsystem.dtos.MoveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.MoveItemRequestDto;
 import com.thegym.warehousemanagementsystem.entities.*;
 import com.thegym.warehousemanagementsystem.exceptions.InvalidInputException;
 import com.thegym.warehousemanagementsystem.repositories.ItemRepository;

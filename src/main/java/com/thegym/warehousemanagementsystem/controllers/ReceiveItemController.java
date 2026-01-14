@@ -1,7 +1,7 @@
 package com.thegym.warehousemanagementsystem.controllers;
 
 
-import com.thegym.warehousemanagementsystem.dtos.ReceiveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.ReceiveItemRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Item;
 import com.thegym.warehousemanagementsystem.services.ReceiveItemService;
 import lombok.AllArgsConstructor;

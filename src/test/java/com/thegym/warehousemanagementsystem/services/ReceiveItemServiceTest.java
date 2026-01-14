@@ -1,7 +1,7 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.ReceiveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.ReceiveItemRequestDto;
 import com.thegym.warehousemanagementsystem.entities.*;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.repositories.*;

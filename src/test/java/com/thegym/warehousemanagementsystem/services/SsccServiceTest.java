@@ -1,7 +1,7 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.SsccRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.SsccRequestDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
 import com.thegym.warehousemanagementsystem.entities.Sscc;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
