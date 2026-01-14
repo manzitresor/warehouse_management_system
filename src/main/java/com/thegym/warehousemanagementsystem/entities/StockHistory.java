@@ -1,5 +1,6 @@
 package com.thegym.warehousemanagementsystem.entities;
 
+import com.thegym.warehousemanagementsystem.enums.Action;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

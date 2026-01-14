@@ -2,7 +2,7 @@ package com.thegym.warehousemanagementsystem.services;
 
 import com.thegym.warehousemanagementsystem.dtos.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.MoveItemRequestDto;
-import com.thegym.warehousemanagementsystem.entities.Action;
+import com.thegym.warehousemanagementsystem.enums.Action;
 import com.thegym.warehousemanagementsystem.entities.StockHistory;
 import com.thegym.warehousemanagementsystem.exceptions.InvalidInputException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
