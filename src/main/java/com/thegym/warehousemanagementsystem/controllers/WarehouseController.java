@@ -2,6 +2,7 @@ package com.thegym.warehousemanagementsystem.controllers;
 
 
 import com.thegym.warehousemanagementsystem.dtos.LocationRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.LocationResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.UpdateWarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.WarehouseRequestDto;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
@@ -34,7 +35,7 @@ public class WarehouseController {
     }
 
     @PostMapping("/{warehouseId}/locations")
-    public ResponseEntity<?> createLocation(@PathVariable Long warehouseId, @RequestBody LocationRequestDto locationRequestDto) {
+    public ResponseEntity<LocationResponseDto> createLocation(@PathVariable Long warehouseId, @RequestBody LocationRequestDto locationRequestDto) {
         var location = locationService.create(warehouseId, locationRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(location);
     }
