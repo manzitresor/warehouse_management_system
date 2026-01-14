@@ -2,6 +2,7 @@ package com.thegym.warehousemanagementsystem.services;
 
 
 import com.thegym.warehousemanagementsystem.dtos.requestDto.SsccRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.SsccResponseDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
 import com.thegym.warehousemanagementsystem.entities.Sscc;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
@@ -53,10 +54,10 @@ public class SsccServiceTest {
     @DisplayName("Should create Sscc successful")
     void sscc_create_successful() {
         SsccRequestDto ssccRequestDto = new SsccRequestDto("003871234567890122");
-        when(cartonHeaderRepository.findById(1L)).thenReturn(Optional.of(cartonHeader));
+        when(cartonHeaderRepository.findCartonHeaderByBarcode("40123451")).thenReturn(Optional.of(cartonHeader));
         when(ssccRepository.save(any(Sscc.class))).thenReturn(sscc);
 
-        Sscc sscc = ssccService.create(cartonHeader.getId(),ssccRequestDto);
+        SsccResponseDto sscc = ssccService.create(cartonHeader.getBarcode(),ssccRequestDto);
         Assertions.assertNotNull(sscc);
     }
 
@@ -64,8 +65,8 @@ public class SsccServiceTest {
     @DisplayName("Should throw if carton header not found")
     void sscc_create_return_notFound() {
         SsccRequestDto ssccRequestDto = new SsccRequestDto("003871234567890122");
-        Long  cartonHeaderId = 5L;
-        when(cartonHeaderRepository.findById(cartonHeaderId)).thenReturn(Optional.empty());
+        String  cartonHeaderId ="40123451";
+        when(cartonHeaderRepository.findCartonHeaderByBarcode(cartonHeaderId)).thenReturn(Optional.empty());
 
 
         Assertions.assertThrows(ResourceNotFoundException.class,()-> ssccService.create(cartonHeaderId,ssccRequestDto));
@@ -75,11 +76,11 @@ public class SsccServiceTest {
     @DisplayName("Should verify Carton header lookup and association")
     void sscc_lookup_successful() {
         SsccRequestDto ssccRequestDto = new SsccRequestDto("003871234567890122");
-        when(cartonHeaderRepository.findById(1L)).thenReturn(Optional.of(cartonHeader));
+        when(cartonHeaderRepository.findCartonHeaderByBarcode("40123451")).thenReturn(Optional.of(cartonHeader));
         when(ssccRepository.save(any(Sscc.class))).thenReturn(sscc);
 
-        Sscc sscc = ssccService.create(cartonHeader.getId(),ssccRequestDto);
-        verify(cartonHeaderRepository).findById(1L);
+        SsccResponseDto sscc = ssccService.create(cartonHeader.getBarcode(),ssccRequestDto);
+        verify(cartonHeaderRepository).findCartonHeaderByBarcode("40123451");
 
 
         ArgumentCaptor<Sscc> captor = ArgumentCaptor.forClass(Sscc.class);
