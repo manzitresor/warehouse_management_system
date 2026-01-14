@@ -2,6 +2,7 @@ package com.thegym.warehousemanagementsystem.controllers;
 
 
 import com.thegym.warehousemanagementsystem.dtos.requestDto.ReceiveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.entities.Item;
 import com.thegym.warehousemanagementsystem.services.ReceiveItemService;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,8 @@ public class ReceiveItemController {
     private final ReceiveItemService receiveItemService;
 
     @PostMapping()
-    public ResponseEntity<?> createSscc(@RequestBody ReceiveItemRequestDto receiveItemRequestDto) {
-        Item item = receiveItemService.create(receiveItemRequestDto);
+    public ResponseEntity<ItemResponseDto> createSscc(@RequestBody ReceiveItemRequestDto receiveItemRequestDto) {
+        ItemResponseDto item = receiveItemService.create(receiveItemRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 }

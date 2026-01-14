@@ -11,5 +11,5 @@ public class ItemResponseDto {
     private String locationCode;
     private String cartonBarcode;
     private String cartonDescription;
-    private int quantity;
+    private Integer quantity;
 }

@@ -2,6 +2,7 @@ package com.thegym.warehousemanagementsystem.services;
 
 
 import com.thegym.warehousemanagementsystem.dtos.requestDto.ReceiveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.entities.*;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
@@ -24,20 +25,25 @@ public class ReceiveItemService {
 
 
     @Transactional
-    public Item create(ReceiveItemRequestDto requestDto) {
-        var warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber()).orElseThrow(()->new ResourceNotFoundException("Warehouse not found"));
+    public ItemResponseDto create(ReceiveItemRequestDto requestDto) {
+        var warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber())
+                .orElseThrow(()->new ResourceNotFoundException("Warehouse not found"));
+
         if(Boolean.FALSE.equals(warehouse.getActive())){
             throw new ConflictException("Warehouse "+warehouse.getWarehouseNumber()+" is inactive.");
         }
 
-        var sscc = ssccRepository.findBySscc(requestDto.getSscc()).orElseThrow(()->new ResourceNotFoundException("Sscc not found"));
+        var sscc = ssccRepository.findBySscc(requestDto.getSscc())
+                .orElseThrow(()->new ResourceNotFoundException("Sscc not found"));
+
         if(sscc.getReceivedTimestamp() != null ) {
             throw new ConflictException("This Item has been received.");
         }
 
 
         var cartonHeader = sscc.getCartonHeader();
-        var location = locationRepository.findByLocationCode(requestDto.getLocationCode()).orElseThrow(()->new ResourceNotFoundException("Location not found"));
+        var location = locationRepository.findByLocationCode(requestDto.getLocationCode())
+                .orElseThrow(()->new ResourceNotFoundException("Location not found"));
 
         var existingItemOpt = itemRepository.findByItemNumberAndLocation(cartonHeader.getBarcode(), location);
         if(existingItemOpt.isPresent()) {
@@ -46,13 +52,14 @@ public class ReceiveItemService {
             setReceivedTimeStamp(sscc);
 
             saveHistory(cartonHeader, warehouse, sscc, existingItem);
-            return itemRepository.save(existingItem);
+            itemRepository.save(existingItem);
+            return itemToDto(existingItem);
         }
 
         Item item = setItem(cartonHeader, location, sscc);
         saveHistory(cartonHeader, warehouse, sscc, item);
-
-        return itemRepository.save(item);
+        itemRepository.save(item);
+        return itemToDto(item);
     }
 
     private Item setItem(CartonHeader cartonHeader, Location location, Sscc sscc) {
@@ -63,6 +70,16 @@ public class ReceiveItemService {
         item.setLocation(location);
         setReceivedTimeStamp(sscc);
         return item;
+    }
+
+    private ItemResponseDto itemToDto(Item item) {
+        return new ItemResponseDto(
+                item.getItemNumber(),
+                item.getLocation().getLocationCode(),
+                item.getCartonHeader().getBarcode(),
+                item.getCartonHeader().getDescription(),
+                item.getQuantity()
+        );
     }
 
     private void saveHistory(CartonHeader cartonHeader, Warehouse warehouse, Sscc sscc, Item item) {

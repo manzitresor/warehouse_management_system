@@ -2,8 +2,7 @@ package com.thegym.warehousemanagementsystem.services;
 
 import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.requestDto.MoveItemRequestDto;
-import com.thegym.warehousemanagementsystem.entities.Action;
-import com.thegym.warehousemanagementsystem.entities.StockHistory;
+import com.thegym.warehousemanagementsystem.entities.*;
 import com.thegym.warehousemanagementsystem.exceptions.InvalidInputException;
 import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.ItemRepository;
@@ -24,31 +23,50 @@ public class MoveItemService {
 
     @Transactional
     public ItemResponseDto moveItem(MoveItemRequestDto requestDto) {
-        var warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber()).orElseThrow(() -> new ResourceNotFoundException("Warehouse Not Found"));
+        var warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber())
+                .orElseThrow(() -> new ResourceNotFoundException("Warehouse Not Found"));
+
         if (Boolean.FALSE.equals(warehouse.getActive())) {
             throw new InvalidInputException("Warehouse is not active.");
         }
 
-        var fromLocation = locationRepository.findLocationByLocationCodeAndWarehouse(requestDto.getFromLocationCode(), warehouse).orElseThrow(() -> new ResourceNotFoundException("Location Not Found"));
-        var toLocation = locationRepository.findLocationByLocationCodeAndWarehouse(requestDto.getToLocationCode(), warehouse).orElseThrow(() -> new ResourceNotFoundException("Destination Location Not Found"));
+        var fromLocation = locationRepository.findLocationByLocationCodeAndWarehouse(requestDto.getFromLocationCode(), warehouse)
+                .orElseThrow(() -> new ResourceNotFoundException("Location Not Found"));
+
+        var toLocation = locationRepository.findLocationByLocationCodeAndWarehouse(requestDto.getToLocationCode(), warehouse)
+                .orElseThrow(() -> new ResourceNotFoundException("Destination Location Not Found"));
 
         if (fromLocation.getLocationCode().equals(toLocation.getLocationCode())) {
             throw new InvalidInputException("fromLocationCode cannot be the same as toLocationCode ");
         }
 
 
-        var fromItem = itemRepository.findByItemNumberAndLocation(requestDto.getItemNumber(), fromLocation).orElseThrow(() -> new ResourceNotFoundException("Item Not Found"));
+        var fromItem = itemRepository.findByItemNumberAndLocation(requestDto.getItemNumber(), fromLocation)
+                .orElseThrow(() -> new ResourceNotFoundException("Item Not Found"));
+
         if (fromItem.getQuantity() < requestDto.getQuantity()) {
             throw new InvalidInputException("Insufficient quantity");
         }
 
-        var toItem = itemRepository.findByItemNumberAndLocation(requestDto.getItemNumber(), toLocation).orElseThrow(() -> new ResourceNotFoundException("Destination Item Not Found"));
+        var toItem = itemRepository.findByItemNumberAndLocation(requestDto.getItemNumber(), toLocation).orElse(null);
+        if (toItem == null) {
+            toItem = createNewItemAtLocation(
+                    requestDto.getItemNumber(),
+                    toLocation,
+                    fromItem.getCartonHeader());
+        }
 
         toItem.setQuantity(toItem.getQuantity() + requestDto.getQuantity());
         fromItem.setQuantity(fromItem.getQuantity() - requestDto.getQuantity());
         itemRepository.save(fromItem);
         itemRepository.save(toItem);
-        saveHistory(fromItem.getItemNumber(), warehouse.getWarehouseNumber(), requestDto.getQuantity(), fromItem.getLocation().getLocationCode(), toItem.getLocation().getLocationCode());
+
+        saveHistory(fromItem.getItemNumber(),
+                warehouse.getWarehouseNumber(),
+                requestDto.getQuantity(),
+                fromItem.getLocation().getLocationCode(),
+                toItem.getLocation().getLocationCode()
+            );
 
         return new ItemResponseDto(
                 toItem.getItemNumber(),
@@ -57,6 +75,15 @@ public class MoveItemService {
                 toItem.getCartonHeader().getDescription(),
                 toItem.getQuantity()
         );
+    }
+
+    private Item createNewItemAtLocation(String itemNumber, Location location, CartonHeader cartonHeader) {
+        Item newItem = new Item();
+        newItem.setItemNumber(itemNumber);
+        newItem.setLocation(location);
+        newItem.setCartonHeader(cartonHeader);
+        newItem.setQuantity(0);
+        return itemRepository.save(newItem);
     }
 
     private void saveHistory(String itemNumber, String warehouseNumber, Integer quantity, String toLocationCode, String fromLocationCode) {
