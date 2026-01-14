@@ -4,6 +4,7 @@ package com.thegym.warehousemanagementsystem.controllers;
 import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.requestDto.SsccRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.SsccResponseDto;
 import com.thegym.warehousemanagementsystem.entities.Sscc;
 import com.thegym.warehousemanagementsystem.services.CartonHeaderService;
 import com.thegym.warehousemanagementsystem.services.SsccService;
@@ -34,8 +35,8 @@ public class CartonHeaderController {
     }
 
     @PostMapping("/{barcode}/ssccs")
-    public ResponseEntity<?> createSsccs(@Valid @PathVariable String barcode, @RequestBody SsccRequestDto createSssccRequiredDto){
-        Sscc sscc = ssccService.create(barcode,createSssccRequiredDto);
+    public ResponseEntity<SsccResponseDto> createSsccs(@Valid @PathVariable String barcode, @RequestBody SsccRequestDto createSssccRequiredDto){
+        SsccResponseDto sscc = ssccService.create(barcode,createSssccRequiredDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(sscc);
     }
 

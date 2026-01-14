@@ -2,6 +2,7 @@ package com.thegym.warehousemanagementsystem.services;
 
 
 import com.thegym.warehousemanagementsystem.dtos.requestDto.SsccRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.SsccResponseDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
 import com.thegym.warehousemanagementsystem.entities.Sscc;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
@@ -18,7 +19,7 @@ public class SsccService {
     private CartonHeaderRepository cartonHeaderRepository;
 
 
-    public Sscc create(String barcode, SsccRequestDto ssccRequestDto) {
+    public SsccResponseDto create(String barcode, SsccRequestDto ssccRequestDto) {
         CartonHeader cartonHeader = cartonHeaderRepository.findCartonHeaderByBarcode(barcode).orElse(null);
         if(cartonHeader == null ){
             throw new ResourceNotFoundException("Carton header not found");
@@ -31,6 +32,7 @@ public class SsccService {
         Sscc sscc = new Sscc();
         sscc.setSscc(ssccRequestDto.getSscc());
         sscc.setCartonHeader(cartonHeader);
-        return ssccRepository.save(sscc);
+        ssccRepository.save(sscc);
+        return new SsccResponseDto(sscc.getId(),sscc.getSscc(),sscc.getReceivedTimestamp(),sscc.getCreatedTimestamp(),sscc.getUpdatedTimestamp());
     }
 }
