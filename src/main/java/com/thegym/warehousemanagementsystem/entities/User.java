@@ -55,6 +55,7 @@ public class User {
     public void setDefaultValues() {
         this.createdTimestamp = Instant.now();
         this.updatedTimestamp = Instant.now();
+        this.role = Role.USER;
     }
 
     @PreUpdate

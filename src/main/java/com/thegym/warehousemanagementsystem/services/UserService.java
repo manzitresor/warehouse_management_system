@@ -24,7 +24,6 @@ public class UserService {
         user.setName(requestDto.getName());
         user.setEmail(requestDto.getEmail());
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        user.setRole(Role.ADMIN);
         userRepository.save(user);
 
         return new UserResponseDto(
