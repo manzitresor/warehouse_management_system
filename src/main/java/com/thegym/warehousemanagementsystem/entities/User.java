@@ -20,7 +20,6 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Size(max = 255)
     @NotNull
     @ColumnDefault("'USER'")
     @Column(name = "role", nullable = false)
@@ -34,7 +33,7 @@ public class User {
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false,unique = true)
     private String email;
 
     @Size(max = 255)
@@ -56,7 +55,6 @@ public class User {
     public void setDefaultValues() {
         this.createdTimestamp = Instant.now();
         this.updatedTimestamp = Instant.now();
-        this.role = Role.USER;
     }
 
     @PreUpdate
