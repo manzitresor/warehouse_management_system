@@ -1,7 +1,7 @@
 package com.thegym.warehousemanagementsystem.services;
 
-import com.thegym.warehousemanagementsystem.dtos.ItemListResponseDto;
-import com.thegym.warehousemanagementsystem.dtos.ItemResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemListResponseDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.entities.CartonHeader;
 import com.thegym.warehousemanagementsystem.entities.Item;
 import com.thegym.warehousemanagementsystem.entities.Location;

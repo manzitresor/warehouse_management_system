@@ -1,7 +1,8 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
-import com.thegym.warehousemanagementsystem.dtos.ReceiveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.ReceiveItemRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.entities.*;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
 import com.thegym.warehousemanagementsystem.repositories.*;
@@ -32,6 +33,8 @@ public class ReceiveItemServiceTest {
     private ItemRepository itemRepository;
     @Mock
     private CartonHeaderRepository cartonHeaderRepository;
+    @Mock
+    private StockHistoryRepository stockHistoryRepository;
 
 
     @InjectMocks
@@ -85,7 +88,7 @@ public class ReceiveItemServiceTest {
         when(itemRepository.findByItemNumberAndLocation(any(), any())).thenReturn(Optional.empty());
         when(itemRepository.save(any(Item.class))).thenReturn(item);
 
-        Item savedItem = receiveItemService.create(requestDto);
+        ItemResponseDto savedItem = receiveItemService.create(requestDto);
 
         Assertions.assertNotNull(savedItem);
         Assertions.assertEquals(cartonHeader.getBarcode(), savedItem.getItemNumber());
@@ -96,17 +99,19 @@ public class ReceiveItemServiceTest {
     public void should_increment_quantity_if_item_exists(){
         ReceiveItemRequestDto requestDto = new ReceiveItemRequestDto("4", "003871234567890122", "1-2-4");
 
+        item.setQuantity(5);  // Start with 5
+
         when(warehouseRepository.findByWarehouseNumber("4")).thenReturn(Optional.of(warehouse));
         when(ssccRepository.findBySscc("003871234567890122")).thenReturn(Optional.of(sscc));
         when(locationRepository.findByLocationCode("1-2-4")).thenReturn(Optional.of(location));
-        when(itemRepository.findByItemNumberAndLocation(cartonHeader.getBarcode(),location)).thenReturn(Optional.of(item));
-
-        item.setQuantity(item.getQuantity() + 1);
+        when(itemRepository.findByItemNumberAndLocation(cartonHeader.getBarcode(),location))
+                .thenReturn(Optional.of(item));
         when(itemRepository.save(any(Item.class))).thenReturn(item);
 
-        Item savedItem = receiveItemService.create(requestDto);
+        ItemResponseDto savedItem = receiveItemService.create(requestDto);
+
         Assertions.assertNotNull(savedItem);
-        Assertions.assertEquals(item.getQuantity(), savedItem.getQuantity());
+        Assertions.assertEquals(6, savedItem.getQuantity());  // Should be 5 + 1
     }
 
     @Test
