@@ -23,10 +23,6 @@ import java.util.Date;
 public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    private long tokenExperiation = 86400;
-    @Value("${spring.jwt.secret}")
-    private String secret;
-
     @Override
     public UserDetails loadUserByUsername(String email) throws ResourceNotFoundException {
         var user = userRepository.findUsersByEmail(email).orElseThrow(
@@ -39,15 +35,5 @@ public class AuthService implements UserDetailsService {
     }
 
 
-    public String generateToken(String email) {
-
-        return Jwts.builder()
-                .subject(email)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExperiation))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
-                .compact();
-
-    }
 
 }

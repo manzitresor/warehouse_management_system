@@ -1,5 +1,6 @@
 package com.thegym.warehousemanagementsystem.config;
 
+import com.thegym.warehousemanagementsystem.filters.JwtAuthenticationFilter;
 import com.thegym.warehousemanagementsystem.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration()
 @EnableWebSecurity
@@ -21,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private AuthService authService;
+    private JwtAuthenticationFilter  jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,7 +49,9 @@ public class SecurityConfig {
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(c->c.disable())
                 .authorizeHttpRequests( c ->
-                        c.anyRequest().permitAll());
+                        c.requestMatchers("/api/auth/**").permitAll()
+                                .anyRequest().authenticated())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
