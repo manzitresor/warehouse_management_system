@@ -4,6 +4,7 @@ import com.thegym.warehousemanagementsystem.dtos.requestDto.UserRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.responseDto.UserResponseDto;
 import com.thegym.warehousemanagementsystem.entities.User;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
+import com.thegym.warehousemanagementsystem.exceptions.ResourceNotFoundException;
 import com.thegym.warehousemanagementsystem.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,4 +31,9 @@ public class UserService {
                 user.getEmail()
         );
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findUsersByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+    }
+
 }

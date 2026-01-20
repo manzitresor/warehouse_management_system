@@ -26,7 +26,7 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws ResourceNotFoundException {
         var user = userRepository.findUsersByEmail(email).orElseThrow(
-                () -> new   ResourceNotFoundException("User not found"));
+                () -> new ResourceNotFoundException("User not found"));
         return new User(
                 user.getEmail(),
                 user.getPassword(),

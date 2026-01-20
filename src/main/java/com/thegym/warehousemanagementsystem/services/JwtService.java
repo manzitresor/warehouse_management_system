@@ -1,5 +1,6 @@
 package com.thegym.warehousemanagementsystem.services;
 
+import com.thegym.warehousemanagementsystem.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -10,15 +11,16 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-
     private long tokenExperiation = 86400;
     @Value("${spring.jwt.secret}")
     private String secret;
 
-    public String generateToken(String email) {
 
+    public String generateToken(User user) {
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getId().toString())
+                .claim("email", user.getEmail())
+                .claim("name", user.getName())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExperiation))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
@@ -42,7 +44,7 @@ public class JwtService {
                 .getPayload();
     }
 
-    public String getEmail(String token) {
+    public String getUserIdFromToken(String token) {
         return getClaims(token).getSubject();
     }
 }
