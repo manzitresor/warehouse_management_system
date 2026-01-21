@@ -60,7 +60,7 @@ public class Location {
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "location")
     private Set<Item> items = new LinkedHashSet<>();
 
     @PrePersist

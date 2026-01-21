@@ -46,11 +46,11 @@ public class CartonHeader {
     @Column(name = "updated_timestamp", nullable = false)
     private Instant updatedTimestamp;
 
-    @OneToMany(mappedBy = "cartonHeader",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cartonHeader",fetch = FetchType.LAZY)
     @JsonIgnoreProperties("cartonHeader")
     private Set<Item> items = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "cartonHeader", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cartonHeader")
     @JsonIgnoreProperties("cartonHeader")
     private Set<Sscc> ssccs = new LinkedHashSet<>();
 
