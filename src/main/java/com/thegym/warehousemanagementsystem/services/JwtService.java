@@ -1,6 +1,7 @@
 package com.thegym.warehousemanagementsystem.services;
 
 import com.thegym.warehousemanagementsystem.entities.User;
+import com.thegym.warehousemanagementsystem.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -47,5 +48,9 @@ public class JwtService {
 
     public String getUserIdFromToken(String token) {
         return getClaims(token).getSubject();
+    }
+
+    public Role getRoleFromToken(String token) {
+        return Role.valueOf(getClaims(token).get("role", String.class));
     }
 }
