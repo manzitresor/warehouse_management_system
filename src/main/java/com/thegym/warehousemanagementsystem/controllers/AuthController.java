@@ -35,7 +35,6 @@ public class AuthController {
         var user = userService.getUserByEmail(requestDto.getEmail());
         var token = jwtService.generateToken(user);
         return ResponseEntity.ok().body(new JwtResponseDto(token));
-
     }
 
 }
