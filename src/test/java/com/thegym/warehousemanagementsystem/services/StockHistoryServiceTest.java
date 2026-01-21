@@ -1,7 +1,7 @@
 package com.thegym.warehousemanagementsystem.services;
 
 import com.thegym.warehousemanagementsystem.dtos.HistoryParamDto;
-import com.thegym.warehousemanagementsystem.entities.Action;
+import com.thegym.warehousemanagementsystem.enums.Action;
 import com.thegym.warehousemanagementsystem.entities.StockHistory;
 import com.thegym.warehousemanagementsystem.repositories.StockHistoryRepository;
 import org.junit.jupiter.api.Assertions;

@@ -5,7 +5,6 @@ import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderRequest
 import com.thegym.warehousemanagementsystem.dtos.responseDto.CartonHeaderResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.requestDto.SsccRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.responseDto.SsccResponseDto;
-import com.thegym.warehousemanagementsystem.entities.Sscc;
 import com.thegym.warehousemanagementsystem.services.CartonHeaderService;
 import com.thegym.warehousemanagementsystem.services.SsccService;
 import jakarta.validation.Valid;

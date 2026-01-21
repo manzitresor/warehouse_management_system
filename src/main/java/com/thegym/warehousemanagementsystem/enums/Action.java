@@ -1,4 +1,4 @@
-package com.thegym.warehousemanagementsystem.entities;
+package com.thegym.warehousemanagementsystem.enums;
 
 public enum Action {
     RECEIVE,
