@@ -1,6 +1,7 @@
 package com.thegym.warehousemanagementsystem.services;
 
 
+import com.thegym.warehousemanagementsystem.KafkaEvents.ReceiveItemEvent;
 import com.thegym.warehousemanagementsystem.dtos.requestDto.ReceiveItemRequestDto;
 import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.entities.*;
@@ -18,49 +19,43 @@ import java.time.Instant;
 @Service
 @AllArgsConstructor
 public class ReceiveItemService {
-    private final StockHistoryRepository stockHistoryRepository;
-    private LocationRepository locationRepository;
-    private WarehouseRepository warehouseRepository;
-    private SsccRepository ssccRepository;
-    private ItemRepository itemRepository;
 
+
+    private SsccRepository ssccRepository;
+    private LocationRepository locationRepository;
+    private ItemRepository itemRepository;
+    private WarehouseRepository warehouseRepository;
+    private StockHistoryRepository stockHistoryRepository;
 
     @Transactional
-    public ItemResponseDto create(ReceiveItemRequestDto requestDto) {
-        var warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber())
-                .orElseThrow(()->new ResourceNotFoundException("Warehouse not found"));
-
-        if(Boolean.FALSE.equals(warehouse.getActive())){
-            throw new ConflictException("Warehouse "+warehouse.getWarehouseNumber()+" is inactive.");
-        }
+public void handleReceive(ReceiveItemRequestDto requestDto) {
+        Warehouse warehouse = warehouseRepository.findByWarehouseNumber(requestDto.getWarehouseNumber()).orElseThrow(() -> new ResourceNotFoundException("Warehouse not found"));
 
         var sscc = ssccRepository.findBySscc(requestDto.getSscc())
-                .orElseThrow(()->new ResourceNotFoundException("Sscc not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Sscc not found"));
 
-        if(sscc.getReceivedTimestamp() != null ) {
+        if (sscc.getReceivedTimestamp() != null) {
             throw new ConflictException("This Item has been received.");
         }
 
 
         var cartonHeader = sscc.getCartonHeader();
         var location = locationRepository.findByLocationCode(requestDto.getLocationCode())
-                .orElseThrow(()->new ResourceNotFoundException("Location not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Location not found"));
 
         var existingItemOpt = itemRepository.findByItemNumberAndLocation(cartonHeader.getBarcode(), location);
-        if(existingItemOpt.isPresent()) {
+        if (existingItemOpt.isPresent()) {
             Item existingItem = existingItemOpt.get();
             existingItem.setQuantity(existingItem.getQuantity() + 1);
             setReceivedTimeStamp(sscc);
 
             saveHistory(cartonHeader, warehouse, sscc, existingItem);
             itemRepository.save(existingItem);
-            return itemToDto(existingItem);
         }
 
         Item item = setItem(cartonHeader, location, sscc);
         saveHistory(cartonHeader, warehouse, sscc, item);
         itemRepository.save(item);
-        return itemToDto(item);
     }
 
     private Item setItem(CartonHeader cartonHeader, Location location, Sscc sscc) {
@@ -71,16 +66,6 @@ public class ReceiveItemService {
         item.setLocation(location);
         setReceivedTimeStamp(sscc);
         return item;
-    }
-
-    private ItemResponseDto itemToDto(Item item) {
-        return new ItemResponseDto(
-                item.getItemNumber(),
-                item.getLocation().getLocationCode(),
-                item.getCartonHeader().getBarcode(),
-                item.getCartonHeader().getDescription(),
-                item.getQuantity()
-        );
     }
 
     private void saveHistory(CartonHeader cartonHeader, Warehouse warehouse, Sscc sscc, Item item) {

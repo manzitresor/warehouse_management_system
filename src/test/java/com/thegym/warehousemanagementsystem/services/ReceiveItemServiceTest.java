@@ -124,7 +124,7 @@ public class ReceiveItemServiceTest {
         sscc.setReceivedTimestamp(Instant.now());
         when(ssccRepository.findBySscc("003871234567890122")).thenReturn(Optional.of(sscc));
 
-        Assertions.assertThrows(ConflictException.class,()-> receiveItemService.create(requestDto));
+        Assertions.assertThrows(ConflictException.class,()-> receiveItemService.handleReceive(requestDto));
     }
 
 }
