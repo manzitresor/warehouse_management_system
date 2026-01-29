@@ -1,6 +1,7 @@
 package com.thegym.warehousemanagementsystem.services;
 
-import com.thegym.warehousemanagementsystem.dtos.LocationRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.requestDto.LocationRequestDto;
+import com.thegym.warehousemanagementsystem.dtos.responseDto.LocationResponseDto;
 import com.thegym.warehousemanagementsystem.entities.Location;
 import com.thegym.warehousemanagementsystem.entities.Warehouse;
 import com.thegym.warehousemanagementsystem.exceptions.ConflictException;
@@ -61,10 +62,10 @@ public class LocationServiceTest {
         when(locationRepository.save(any(Location.class))).thenReturn(location);
 
 
-        Location savedLocation = locationService.create(warehouse.getId(),locationRequestDto);
+        LocationResponseDto savedLocation = locationService.create(warehouse.getId(),locationRequestDto);
 
         Assertions.assertNotNull(savedLocation);
-        Assertions.assertEquals(savedLocation.getId(),location.getId());
+        Assertions.assertEquals(savedLocation.getLocationCode(),location.getLocationCode());
     }
 
 
@@ -96,7 +97,7 @@ public class LocationServiceTest {
         String  locationCode = "1-2-4";
         when(warehouseRepository.findById(warehouse.getId())).thenReturn(Optional.of(warehouse));
         when(locationRepository.save(any(Location.class))).thenReturn(location);
-        Location savedLocation = locationService.create(warehouse.getId(),locationRequestDto);
+        LocationResponseDto savedLocation = locationService.create(warehouse.getId(),locationRequestDto);
 
         Assertions.assertEquals(locationCode, savedLocation.getLocationCode());
 
