@@ -3,6 +3,7 @@ package com.thegym.warehousemanagementsystem.controllers;
 
 import com.thegym.warehousemanagementsystem.dtos.responseDto.ItemResponseDto;
 import com.thegym.warehousemanagementsystem.dtos.requestDto.MoveItemRequestDto;
+import com.thegym.warehousemanagementsystem.producers.MoveItemProducer;
 import com.thegym.warehousemanagementsystem.services.MoveItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/move")
 @AllArgsConstructor
 public class MoveItemController {
-    private final MoveItemService moveItemService;
+    private MoveItemProducer moveItemProducer;
 
     @PostMapping()
     public ResponseEntity<ItemResponseDto> moveItem(@RequestBody MoveItemRequestDto moveItemRequestDto) {
-        var item = moveItemService.moveItem(moveItemRequestDto);
-        return ResponseEntity.ok().body(item);
+        moveItemProducer.initiateMove(moveItemRequestDto);
+        return ResponseEntity.ok().build();
     }
 }

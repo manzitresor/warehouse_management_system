@@ -54,6 +54,7 @@ public class SecurityConfig {
                 .csrf(c->c.disable())
                 .authorizeHttpRequests( c -> c
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/warehouses").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT,"/api/warehouses/*").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.POST,"/api/warehouses/{warehouseId}/locations").hasRole(Role.ADMIN.name())
