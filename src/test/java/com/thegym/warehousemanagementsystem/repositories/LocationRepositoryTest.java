@@ -26,7 +26,7 @@ public class LocationRepositoryTest {
     public void setupWarehouse() {
         warehouse = new Warehouse();
         warehouse.setName("Main Warehouse");
-        warehouse.setWarehouseNumber("4");
+        warehouse.setWarehouseNumber("12");
         warehouse = warehouseRepository.saveAndFlush(warehouse);
 
 
