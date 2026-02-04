@@ -54,7 +54,7 @@ public class ItemRepositoryTest {
         location = locationRepository.saveAndFlush(loc);
 
         CartonHeader header = new CartonHeader();
-        header.setBarcode("40123450");
+        header.setBarcode("40123405");
         header.setDescription("Test carton");
         cartonHeader = cartonHeaderRepository.saveAndFlush(header);
 

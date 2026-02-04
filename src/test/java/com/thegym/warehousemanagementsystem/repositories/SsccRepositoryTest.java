@@ -27,12 +27,12 @@ public class SsccRepositoryTest {
     @BeforeEach
     public void setup() {
         cartonHeader = new CartonHeader();
-        cartonHeader.setBarcode("40123451");
+        cartonHeader.setBarcode("40123464");
         cartonHeader.setDescription("Box with white t-shirts");
         cartonHeaderRepository.saveAndFlush(cartonHeader);
 
         sscc = new Sscc();
-        sscc.setSscc("003871234567890122");
+        sscc.setSscc("003871234567890133");
         sscc.setCartonHeader(cartonHeader);
     }
 
@@ -48,7 +48,7 @@ public class SsccRepositoryTest {
     public void sscc_create_return_unique(){
         ssccRepository.saveAndFlush(sscc);
         Sscc duplicateSscc = new Sscc();
-        duplicateSscc.setSscc("003871234567890122");
+        duplicateSscc.setSscc("003871234567890133");
         duplicateSscc.setCartonHeader(cartonHeader);
 
         Assertions.assertThrows(DataIntegrityViolationException.class,()->ssccRepository.saveAndFlush(duplicateSscc));
