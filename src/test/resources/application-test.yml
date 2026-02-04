@@ -4,10 +4,12 @@ spring:
     username: postgres
     password: manzi123
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
 
   flyway:
     enabled: true
 
-  jpa:
-    hibernate:
-      ddl-auto: validate
+
+
